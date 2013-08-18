@@ -13,6 +13,7 @@ Bombolone is a tasty Content Management System for Ruby based on Sinatra, Cassan
 gem install sinatra
 gem install sinatra-contrib 
 gem install cassandra
+gem install simple_uuid
 
 # Clone the git repo in your new web app folder
 git clone https://github.com/Opentaste/tasty-bombolone.git web_app

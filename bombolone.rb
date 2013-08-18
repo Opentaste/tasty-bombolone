@@ -3,7 +3,11 @@ require 'rubygems'
 require 'sinatra/base'
 require 'sinatra/content_for'
 require 'cassandra'
+require 'simple_uuid'
 
+db = Cassandra.new('bombolone')
+#@users = db.get(:Lists, 'users').keys
+print db
 
 class MainScreen < Sinatra::Base
   # Main Pages
@@ -14,7 +18,6 @@ class MainScreen < Sinatra::Base
     @test_word = "leo"
     erb :home
   end
-
 end
 
 
@@ -31,10 +34,9 @@ class LoginScreen < Sinatra::Base
     if params[:name] == 'admin' && params[:password] == 'admin'
       session['user_name'] = params[:name]
     else
-      redirect '/login'
+      redirect '/admin'
     end
   end
-
 end
 
 
@@ -44,9 +46,8 @@ class AdminScreen < Sinatra::Base
   enable :sessions
 
   get('/admin') do
-    erb :login, :locals => content
+    erb :admin
   end
-
 end
 
 
@@ -66,12 +67,11 @@ class Helpers < Sinatra::Base
     @auth ||=  Rack::Auth::Basic::Request.new(request.env)
     @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [@username, @password]
   end
-
 end
 
 
 class TastyBombolone < Sinatra::Base
-  # Main Bombolone App,
+  # Main Bombolone App
 
   before do
     # ~~~~
