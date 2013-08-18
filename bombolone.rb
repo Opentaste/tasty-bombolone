@@ -1,9 +1,57 @@
 # bombolone.rb
 require 'rubygems'
 require 'sinatra/base'
+require 'sinatra/content_for'
 require 'cassandra'
 
+
+class MainScreen < Sinatra::Base
+  # Main Pages
+  helpers Sinatra::ContentFor
+  enable :sessions
+
+  get('/') do
+    @test_word = "leo"
+    erb :home
+  end
+
+end
+
+
+class LoginScreen < Sinatra::Base
+  # Login Pages
+  helpers Sinatra::ContentFor
+  enable :sessions
+
+  get('/login') do
+  	erb :login
+  end
+
+  post('/login') do
+    if params[:name] == 'admin' && params[:password] == 'admin'
+      session['user_name'] = params[:name]
+    else
+      redirect '/login'
+    end
+  end
+
+end
+
+
+# Admin Pages
+class AdminScreen < Sinatra::Base
+  helpers Sinatra::ContentFor
+  enable :sessions
+
+  get('/admin') do
+    erb :login, :locals => content
+  end
+
+end
+
+
 class Helpers < Sinatra::Base
+  # Helpers functions
   include Rack::Utils
   alias_method :h, :escape_html
 
@@ -21,38 +69,19 @@ class Helpers < Sinatra::Base
 
 end
 
-class LoginScreen < Sinatra::Base
-  enable :sessions
 
-  get('/login') do
-  	content = {
-  		:foo => "bar"
-  	}
-  	erb :login, :locals => content
-  end
-
-  post('/login') do
-    if params[:name] == 'admin' && params[:password] == 'admin'
-      session['user_name'] = params[:name]
-    else
-      redirect '/login'
-    end
-  end
-end
-
-class MyApp < Sinatra::Base
-  # middleware will run before filters
-  use Helpers
-  use LoginScreen
+class TastyBombolone < Sinatra::Base
+  # Main Bombolone App,
 
   before do
     # ~~~~
   end
 
-  get('/') do
-  	@test_word = "leo"
-  	erb :index
-  end
+  # Middleware will run before
+  use Helpers
+  use MainScreen
+  use LoginScreen
+  use AdminScreen
 
   get '/*' do
     erb :not_found
