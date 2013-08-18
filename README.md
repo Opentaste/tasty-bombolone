@@ -10,7 +10,8 @@ Bombolone is a tasty Content Management System for Ruby based on Sinatra, Cassan
 
 ```shell
 # Install the Sinatra
-sudo gem install sinatra
+gem install sinatra
+gem install cassandra
 
 # Clone the git repo in your new web app folder
 git clone https://github.com/Opentaste/tasty-bombolone.git web_app
@@ -19,7 +20,7 @@ git clone https://github.com/Opentaste/tasty-bombolone.git web_app
 cd web_app/
 
 # Install [compass](http://compass-style.org/install/)
-sudo gem install compass
+gem install compass
 
 # Install [coffeescript](http://coffeescript.org/#installation)
 sudo npm install -g coffee-script
