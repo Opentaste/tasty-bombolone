@@ -3,11 +3,17 @@ require 'rubygems'
 require 'sinatra/base'
 require 'sinatra/content_for'
 require 'cassandra'
-require 'simple_uuid'
+#require 'simple_uuid'
 
-db = Cassandra.new('bombolone')
-#@users = db.get(:Lists, 'users').keys
-print db
+db = Cassandra.new('Bombolone')
+
+begin
+  user = db.get(:Users, 'admin')
+  print user
+rescue
+  print "\nCassandra Error : Missed the Keyspace Name Bombolone, \n"
+  print "go to check the Cassandra cofiguration in the README.md\n"
+end
 
 class MainScreen < Sinatra::Base
   # Main Pages
